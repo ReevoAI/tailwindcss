@@ -14,7 +14,7 @@ export function migratePrefix(
 ): string {
   if (!designSystem.theme.prefix) return rawCandidate
   if (!userConfig) return rawCandidate
-  if (!version.isMajor(3)) return rawCandidate
+  // Version check removed - always run for git-aware migration
 
   if (!seenDesignSystems.has(designSystem)) {
     designSystem.utilities.functional('group', (value) => [

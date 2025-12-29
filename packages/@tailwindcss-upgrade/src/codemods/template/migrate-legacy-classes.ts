@@ -72,14 +72,8 @@ export async function migrateLegacyClasses(
   _userConfig: Config | null,
   rawCandidate: string,
 ): Promise<string> {
-  // These migrations are only safe when migrating from v3 to v4.
-  //
-  // Migrating from `rounded` to `rounded-sm` once is fine (v3 -> v4). But if we
-  // migrate again (v4 -> v4), then `rounded-sm` would be migrated to
-  // `rounded-xs` which is incorrect because we already migrated this.
-  if (!version.isMajor(3)) {
-    return rawCandidate
-  }
+  // Version check removed - git-based detection ensures we only migrate
+  // files added/modified after v4 migration, avoiding double-migration issues
 
   let defaultDesignSystem = await DESIGN_SYSTEMS.get(__dirname)
 

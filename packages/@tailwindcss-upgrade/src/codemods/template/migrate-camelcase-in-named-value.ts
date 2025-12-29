@@ -12,7 +12,7 @@ export function migrateCamelcaseInNamedValue(
   _userConfig: Config | null,
   rawCandidate: string,
 ): string {
-  if (!version.isMajor(3)) return rawCandidate
+  // Version check removed - always run for git-aware migration
 
   for (let candidate of designSystem.parseCandidate(rawCandidate)) {
     if (candidate.kind !== 'functional') continue

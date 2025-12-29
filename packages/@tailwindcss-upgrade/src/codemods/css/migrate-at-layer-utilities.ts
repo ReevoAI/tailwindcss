@@ -7,10 +7,8 @@ import { walk, WalkAction, walkDepth } from '../../utils/walk'
 
 export function migrateAtLayerUtilities(stylesheet: Stylesheet): Plugin {
   function migrate(atRule: AtRule) {
-    // Migrating `@layer utilities` to `@utility` is only supported in Tailwind
-    // CSS v3 projects. Tailwind CSS v4 projects could also have `@layer
-    // utilities` but those aren't actual utilities.
-    if (!version.isMajor(3)) return
+    // Version check removed - git-based detection ensures we only migrate
+    // files added/modified after v4 migration
 
     // Only migrate `@layer utilities` and `@layer components`.
     if (atRule.params !== 'utilities' && atRule.params !== 'components') return

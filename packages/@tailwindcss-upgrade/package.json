@@ -1,15 +1,15 @@
 {
-  "name": "@tailwindcss/upgrade",
-  "version": "4.1.18",
-  "description": "A utility-first CSS framework for rapidly building custom user interfaces.",
+  "name": "tailwindcss-enhanced-upgrade",
+  "version": "1.0.0",
+  "description": "Git-aware Tailwind CSS migration tool that solves the 'post-migration code' problem by using git history to detect and migrate code added after your v4 migration.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tailwindlabs/tailwindcss.git",
-    "directory": "packages/@tailwindcss-cli"
+    "url": "https://github.com/ReevoAI/tailwindcss.git",
+    "directory": "packages/@tailwindcss-upgrade"
   },
-  "bugs": "https://github.com/tailwindlabs/tailwindcss/issues",
-  "homepage": "https://tailwindcss.com",
+  "bugs": "https://github.com/ReevoAI/tailwindcss-enhanced-upgrade/issues",
+  "homepage": "https://github.com/ReevoAI/tailwindcss-enhanced-upgrade",
   "scripts": {
     "lint": "tsc --noEmit",
     "build": "tsup-node",

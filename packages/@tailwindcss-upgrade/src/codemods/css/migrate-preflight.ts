@@ -49,9 +49,8 @@ export function migratePreflight({
   }
 
   function migrate(root: Root) {
-    // CSS for backwards compatibility with v3 should only injected in v3
-    // projects and not v4 projects.
-    if (!version.isMajor(3)) return
+    // Version check removed - git-based detection ensures we only migrate
+    // files added/modified after v4 migration
 
     let isTailwindRoot = false
     root.walkAtRules('import', (node) => {

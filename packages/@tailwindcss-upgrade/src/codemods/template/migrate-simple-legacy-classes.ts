@@ -36,11 +36,9 @@ export function migrateSimpleLegacyClasses(
   // `outline-none` in v3 has the same meaning as `outline-hidden` in v4. However,
   // `outline-none` in v4 _also_ exists but has a different meaning.
   //
-  // We can only migrate `outline-none` to `outline-hidden` if we are migrating a
-  // v3 project to v4.
-  if (version.isMajor(3)) {
-    LEGACY_CLASS_MAP['outline-none'] = 'outline-hidden'
-  }
+  // Version check removed - git-based detection ensures we only migrate files
+  // added/modified after v4 migration, so we can safely migrate outline-none
+  LEGACY_CLASS_MAP['outline-none'] = 'outline-hidden'
 
   // Prepare design system with the unknown legacy classes
   if (!seenDesignSystems.has(designSystem)) {

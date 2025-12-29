@@ -10,14 +10,8 @@ export function migrateVariantOrder(
   _userConfig: Config | null,
   rawCandidate: string,
 ): string {
-  // This migration is only needed for Tailwind CSS v3
-  //
-  // Changing the variant order when migrating from v3 to v4 is fine, but
-  // migrating v4 to v4 would make it unsafe because the variant order would
-  // flip-flop every time you run the migration.
-  if (!version.isMajor(3)) {
-    return rawCandidate
-  }
+  // Version check removed - git-based detection ensures we only migrate
+  // files added/modified after v4 migration, avoiding flip-flop issues
 
   for (let candidate of designSystem.parseCandidate(rawCandidate)) {
     if (candidate.variants.length <= 1) {
