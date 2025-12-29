@@ -41,30 +41,28 @@ export async function migrate(options: MigrateOptions = {}) {
     return
   }
 
-  // Filter to CSS files (templates are discovered automatically by the CLI)
+  // Filter to CSS files and template files
   const cssFiles = allFiles.filter((f) => f.endsWith('.css'))
   const templateFiles = allFiles.filter((f) => !f.endsWith('.css'))
 
   logger.info(`CSS files: ${cssFiles.length}`)
-  logger.info(`Template files: ${templateFiles.length} (auto-discovered by CLI)`)
+  logger.info(`Template files: ${templateFiles.length}`)
 
-  // Determine files to pass to CLI
-  let filesToMigrate: string[]
-
-  if (cssFiles.length === 0) {
-    // Only templates changed - need to run full migration
-    logger.warn('No CSS files changed, but templates detected. Running full project scan...')
-    filesToMigrate = [] // Empty array = CLI discovers all CSS files
-  } else {
-    // Pass CSS files - CLI will discover related templates automatically
-    filesToMigrate = cssFiles
+  if (cssFiles.length === 0 && templateFiles.length === 0) {
+    logger.success('No files need migration')
+    return
   }
 
-  // Run the core migration
-  logger.info('Running migration...')
+  // IMPORTANT: Pass detected files to prevent full project scan
+  // If we pass empty array, migrate-core.ts will scan ALL files with globby!
+
+  // Run the core migration with specific files
+  logger.info('Running migration on detected files only...')
   await runMigration({
-    files: filesToMigrate,
+    files: cssFiles, // CSS files for CSS migration
+    templateFiles: templateFiles, // Template files for template migration
     force: options.force,
+    gitAwareMode: true, // Tell migrate-core to skip globby scan
   })
 
   logger.success('Migration complete!')

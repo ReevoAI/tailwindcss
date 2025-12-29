@@ -26,6 +26,8 @@ export interface MigrateCoreOptions {
   files?: string[]
   config?: string
   force?: boolean
+  gitAwareMode?: boolean // Skip full project scan, only migrate specified files
+  templateFiles?: string[] // Specific template files to migrate in git-aware mode
 }
 
 export async function runMigration(options: MigrateCoreOptions = {}) {
@@ -78,8 +80,8 @@ export async function runMigration(options: MigrateCoreOptions = {}) {
     // Use provided files
     let files = (options.files || []).map((file) => path.resolve(base, file))
 
-    // Discover CSS files in case no files were provided
-    if (files.length === 0) {
+    // Discover CSS files in case no files were provided (only in non-git-aware mode)
+    if (files.length === 0 && !options.gitAwareMode) {
       info('Searching for CSS files in the current directory and its subdirectories…')
 
       files = await globby(['**/*.css'], {
@@ -88,6 +90,10 @@ export async function runMigration(options: MigrateCoreOptions = {}) {
         // gitignore: true will first search for all .gitignore including node_modules folders, this makes the initial search much faster
         ignore: ['**/node_modules/**'],
       })
+    } else if (files.length === 0 && options.gitAwareMode) {
+      // Git-aware mode with no files = nothing to migrate
+      info('No CSS files detected for migration in git-aware mode')
+      return
     }
 
     // Ensure we are only dealing with CSS files
@@ -298,9 +304,21 @@ export async function runMigration(options: MigrateCoreOptions = {}) {
         let config = configBySheet.get(sheet)
         let scanner = new Scanner({ sources })
         let filesToMigrate = []
+
+        // In git-aware mode, only migrate detected template files
+        let detectedTemplateFiles = options.gitAwareMode && options.templateFiles
+          ? new Set(options.templateFiles.map(f => path.resolve(base, f)))
+          : null
+
         for (let file of scanner.files) {
           if (file.endsWith('.css')) continue
           if (seenFiles.has(file)) continue
+
+          // Filter to only detected files in git-aware mode
+          if (detectedTemplateFiles && !detectedTemplateFiles.has(file)) {
+            continue
+          }
+
           seenFiles.add(file)
           filesToMigrate.push(file)
         }

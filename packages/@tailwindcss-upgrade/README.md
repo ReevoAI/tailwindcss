@@ -310,6 +310,12 @@ npx ./packages/@tailwindcss-upgrade init --commit abc123
 
 ## Changelog
 
+### v1.0.5 (2025-12-29)
+- **CRITICAL FIX**: Migrate command now respects git-aware file detection
+- Fixed issue where migration ran on ALL files instead of only detected files
+- Added gitAwareMode flag to prevent full project scans
+- Template migration now filters to only detected files
+
 ### v1.0.4 (2025-12-29)
 - Added validation to skip invalid utility names (uppercase, too long)
 - Fixed @keyframes causing unnecessary file splitting

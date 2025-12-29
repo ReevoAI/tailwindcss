@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-enhanced-upgrade",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Git-aware Tailwind CSS migration tool that solves the 'post-migration code' problem by using git history to detect and migrate code added after your v4 migration.",
   "license": "MIT",
   "repository": {
