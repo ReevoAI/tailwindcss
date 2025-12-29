@@ -1,0 +1,62 @@
+name: Tailwind CSS Migration Check
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  check-migration:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for git-based detection
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: |
+          cd packages/@tailwindcss-upgrade
+          pnpm install
+
+      - name: Check for unmigrated files
+        run: |
+          cd packages/@tailwindcss-upgrade
+          npx . check --json > migration-check.json || true
+
+          # Parse JSON and fail if migration needed
+          if [ -f migration-check.json ]; then
+            NEEDS_MIGRATION=$(cat migration-check.json | grep -o '"needsMigration":[^,}]*' | cut -d':' -f2)
+
+            if [ "$NEEDS_MIGRATION" = "true" ]; then
+              echo "❌ Unmigrated Tailwind CSS code detected!"
+              echo ""
+              cat migration-check.json
+              echo ""
+              echo "Run the following command to fix:"
+              echo "  npx tailwindcss-enhanced-upgrade migrate"
+              exit 1
+            else
+              echo "✅ All files are properly migrated"
+            fi
+          fi
+
+      - name: Upload check results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: migration-check-results
+          path: packages/@tailwindcss-upgrade/migration-check.json
+          if-no-files-found: ignore

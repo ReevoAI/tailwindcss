@@ -124,6 +124,59 @@ git checkout feature/old-branch
 npx tailwindcss-enhanced-upgrade validate-branch
 ```
 
+### 5. GitHub Actions Integration
+
+Automatically check for unmigrated code on every PR:
+
+**Step 1: Copy the workflow file**
+
+The workflow is already included in this repository at:
+```
+.github/workflows/tailwind-migration-check.yml
+```
+
+**Step 2: Initialize configuration**
+
+Make sure your repository has the `.tailwindcss-enhanced-upgrade.json` config committed:
+```bash
+npx tailwindcss-enhanced-upgrade init --commit <your-v4-migration-sha>
+git add .tailwindcss-enhanced-upgrade.json
+git commit -m "chore: add Tailwind migration config"
+git push
+```
+
+**Step 3: How it works**
+
+The action will:
+- ✅ Run on every PR and push to main/master
+- ✅ Check for unmigrated files using git history
+- ✅ Fail the build if unmigrated code is detected
+- ✅ Upload detailed results as artifacts
+- ✅ Provide clear error messages with fix instructions
+
+**Example PR check failure:**
+```
+❌ Unmigrated Tailwind CSS code detected!
+
+{
+  "needsMigration": true,
+  "newFiles": ["src/components/Button.tsx"],
+  "modifiedFiles": ["src/styles/main.css"],
+  "branchFiles": []
+}
+
+Run the following command to fix:
+  npx tailwindcss-enhanced-upgrade migrate
+```
+
+**Customizing the workflow:**
+
+Edit `.github/workflows/tailwind-migration-check.yml` to:
+- Change trigger branches
+- Add to specific workflows
+- Customize error messages
+- Skip checks on certain paths
+
 ---
 
 ## Commands
