@@ -257,10 +257,46 @@ A: Yes, we track upstream and incorporate updates.
 
 ---
 
+## Contributing
+
+See [DEVELOPMENT.md](./DEVELOPMENT.md) for setup instructions.
+
+**Quick start:**
+```bash
+git clone https://github.com/ReevoAI/tailwindcss.git
+cd tailwindcss
+pnpm install
+pnpm build
+
+# Test locally
+npx ./packages/@tailwindcss-upgrade init --commit abc123
+```
+
+**Publishing:** See [DEVELOPMENT.md](./DEVELOPMENT.md#publishing-workflow) - must publish tarball from `dist/`, not package directory.
+
+---
+
+## Changelog
+
+### v1.0.2 (2025-12-29)
+- Fixed workspace dependencies publishing issue
+- Fixed `EUNSUPPORTEDPROTOCOL` error
+
+### v1.0.1 (2025-12-29)
+- Unpublished (publishing error)
+
+### v1.0.0 (2025-12-29)
+- Initial release
+- Git-aware migration tracking
+- Commands: `init`, `check`, `migrate`, `validate-branch`
+- GitHub Actions integration
+
+---
+
 ## Repository
 
-**Fork:** https://github.com/ReevoAI/tailwindcss  
-**Package:** `/packages/@tailwindcss-upgrade/`  
+**Fork:** https://github.com/ReevoAI/tailwindcss
+**Package:** `/packages/@tailwindcss-upgrade/`
 **Original:** https://github.com/tailwindlabs/tailwindcss/tree/next/packages/%40tailwindcss-upgrade
 
 ---

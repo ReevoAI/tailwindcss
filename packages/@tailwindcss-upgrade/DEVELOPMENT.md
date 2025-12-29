@@ -172,24 +172,6 @@ Cannot find module '@tailwindcss/node'
 pnpm run build
 ```
 
-### Issue: TypeScript errors about imports
-
-**Symptoms:**
-```
-Module '"picocolors"' has no default export
-```
-
-**Fix:**
-Already fixed in this repo! We added `esModuleInterop: true` to `packages/tsconfig.base.json`.
-
-If you still see errors, run:
-```bash
-cd packages/@tailwindcss-upgrade
-rm -rf node_modules dist
-pnpm install
-pnpm run build
-```
-
 ---
 
 ## Running Full Test Suite
@@ -226,55 +208,42 @@ This checks:
 
 ## Publishing Workflow
 
-### 1. Version Bump
+**⚠️ CRITICAL: Always publish the tarball from `dist/`, never from the package directory!**
+
+The tarball has resolved dependencies (`4.1.18`). The source has workspace references (`workspace:*`).
+
+### Quick Steps
 
 ```bash
+# 1. Update version
 cd packages/@tailwindcss-upgrade
+# Edit package.json: 1.0.2 → 1.0.3
 
-# Update version in package.json
-# Example: 1.0.0 → 1.0.1
+# 2. Build from root
+cd /Users/reevo/Documents/codes/tailwindcss-fork
+pnpm build
+
+# 3. Verify tarball (should show "4.1.18", NOT "workspace:*")
+tar -xzf dist/tailwindcss-enhanced-upgrade.tgz -O package/package.json | jq '.dependencies'
+
+# 4. Publish tarball
+npm publish ./dist/tailwindcss-enhanced-upgrade.tgz --access public --provenance=false --otp=<code>
+
+# 5. Test
+npx tailwindcss-enhanced-upgrade@1.0.3 --version
+
+# 6. Tag
+git tag -a v1.0.3 -m "Release v1.0.3"
+git push origin v1.0.3
 ```
 
-### 2. Build for Production
+### Common Errors
 
-```bash
-pnpm run build
-```
+**"Unsupported URL Type 'workspace:'"**
+- You published from the package directory. Unpublish, bump version, publish tarball.
 
-### 3. Verify Package Contents
-
-```bash
-# Check what will be published
-npm pack --dry-run
-
-# Verify dist/ folder
-ls -la dist/
-# Should contain: index.mjs, index.d.ts
-```
-
-### 4. Publish to npm
-
-**Test publish (verify only):**
-```bash
-npm publish --dry-run
-```
-
-**Actual publish:**
-```bash
-npm publish
-```
-
-**With provenance (recommended):**
-```bash
-npm publish --provenance
-```
-
-### 5. Tag Release
-
-```bash
-git tag -a v1.0.1 -m "Release v1.0.1"
-git push origin v1.0.1
-```
+**"Cannot publish over previously published version"**
+- Bump version in package.json, rebuild, republish.
 
 ---
 
