@@ -21,20 +21,9 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-
-      - name: Install dependencies
-        run: |
-          cd packages/@tailwindcss-upgrade
-          pnpm install
-
       - name: Check for unmigrated files
         run: |
-          cd packages/@tailwindcss-upgrade
-          npx . check --json > migration-check.json || true
+          npx tailwindcss-enhanced-upgrade check --json > migration-check.json || true
 
           # Parse JSON and fail if migration needed
           if [ -f migration-check.json ]; then
@@ -55,8 +44,8 @@ jobs:
 
       - name: Upload check results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: migration-check-results
-          path: packages/@tailwindcss-upgrade/migration-check.json
+          path: migration-check.json
           if-no-files-found: ignore

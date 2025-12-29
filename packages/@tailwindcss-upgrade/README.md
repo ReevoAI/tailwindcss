@@ -128,11 +128,18 @@ npx tailwindcss-enhanced-upgrade validate-branch
 
 Automatically check for unmigrated code on every PR:
 
-**Step 1: Copy the workflow file**
+**Step 1: Copy the workflow template**
 
-The workflow is already included in this repository at:
+```bash
+# After installing the package, copy the template to your repo
+mkdir -p .github/workflows
+cp node_modules/tailwindcss-enhanced-upgrade/templates/github-workflow.yml .github/workflows/tailwind-migration-check.yml
 ```
-.github/workflows/tailwind-migration-check.yml
+
+Or download it directly from npm:
+```bash
+npx tailwindcss-enhanced-upgrade --help  # Shows package location
+# Then copy from node_modules/tailwindcss-enhanced-upgrade/templates/github-workflow.yml
 ```
 
 **Step 2: Initialize configuration**
@@ -145,9 +152,17 @@ git commit -m "chore: add Tailwind migration config"
 git push
 ```
 
-**Step 3: How it works**
+**Step 3: Commit the workflow**
 
-The action will:
+```bash
+git add .github/workflows/tailwind-migration-check.yml
+git commit -m "ci: add Tailwind migration check workflow"
+git push
+```
+
+**How it works:**
+
+The workflow will:
 - ✅ Run on every PR and push to main/master
 - ✅ Check for unmigrated files using git history
 - ✅ Fail the build if unmigrated code is detected
@@ -168,14 +183,6 @@ The action will:
 Run the following command to fix:
   npx tailwindcss-enhanced-upgrade migrate
 ```
-
-**Customizing the workflow:**
-
-Edit `.github/workflows/tailwind-migration-check.yml` to:
-- Change trigger branches
-- Add to specific workflows
-- Customize error messages
-- Skip checks on certain paths
 
 ---
 
