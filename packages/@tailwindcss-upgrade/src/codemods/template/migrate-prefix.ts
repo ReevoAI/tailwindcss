@@ -3,7 +3,6 @@ import { parseCandidate, type Candidate } from '../../../../tailwindcss/src/cand
 import type { Config } from '../../../../tailwindcss/src/compat/plugin-api'
 import type { DesignSystem } from '../../../../tailwindcss/src/design-system'
 import { segment } from '../../../../tailwindcss/src/utils/segment'
-import * as version from '../../utils/version'
 
 let seenDesignSystems = new WeakSet<DesignSystem>()
 

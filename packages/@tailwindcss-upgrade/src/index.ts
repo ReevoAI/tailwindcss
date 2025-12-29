@@ -10,6 +10,12 @@ import { migrate } from './git-aware/commands/migrate'
 const globalOptions = {
   '--help': { type: 'boolean', description: 'Display usage information', alias: '-h' },
   '--version': { type: 'boolean', description: 'Display the version number', alias: '-v' },
+  '--commit': { type: 'string', description: 'Migration commit SHA' },
+  '--force': { type: 'boolean', description: 'Force operation', alias: '-f' },
+  '--json': { type: 'boolean', description: 'Output as JSON' },
+  '--dry-run': { type: 'boolean', description: 'Preview changes without applying' },
+  '--verbose': { type: 'boolean', description: 'Verbose output' },
+  '--config': { type: 'string', description: 'Path to config file', alias: '-c' },
 } satisfies Arg
 
 const flags = args(globalOptions)

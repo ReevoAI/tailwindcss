@@ -119,7 +119,7 @@ export async function runMigration(options: MigrateCoreOptions = {}) {
     // Version check removed - always run for git-aware migration
     try {
       await linkConfigsToStylesheets(stylesheets, {
-        configPath: options.config,
+        configPath: options.config ?? null,
         base,
       })
     } catch (e: any) {

@@ -5,7 +5,6 @@ import { cloneCandidate, type Candidate } from '../../../../tailwindcss/src/cand
 import type { Config } from '../../../../tailwindcss/src/compat/plugin-api'
 import type { DesignSystem } from '../../../../tailwindcss/src/design-system'
 import { DefaultMap } from '../../../../tailwindcss/src/utils/default-map'
-import * as version from '../../utils/version'
 import { baseCandidate } from './candidates'
 
 const __filename = url.fileURLToPath(import.meta.url)

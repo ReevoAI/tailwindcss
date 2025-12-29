@@ -6,7 +6,6 @@ import type { DesignSystem } from '../../../../tailwindcss/src/design-system'
 import { toKeyPath } from '../../../../tailwindcss/src/utils/to-key-path'
 import * as ValueParser from '../../../../tailwindcss/src/value-parser'
 import { walk, WalkAction } from '../../../../tailwindcss/src/walk'
-import * as version from '../../utils/version'
 
 // Defaults in v4
 const DEFAULT_BORDER_COLOR = 'currentcolor'

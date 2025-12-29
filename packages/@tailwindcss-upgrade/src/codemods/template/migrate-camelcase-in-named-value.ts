@@ -1,7 +1,6 @@
 import { cloneCandidate } from '../../../../tailwindcss/src/candidate'
 import type { Config } from '../../../../tailwindcss/src/compat/plugin-api'
 import type { DesignSystem } from '../../../../tailwindcss/src/design-system'
-import * as version from '../../utils/version'
 
 // Converts named values to use kebab-case. This is necessary because the
 // upgrade tool also renames the theme values to kebab-case, so `text-superRed`
