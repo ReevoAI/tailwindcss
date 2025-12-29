@@ -39,9 +39,6 @@ if (flags['--help'] || command === 'help') {
       '  check            Check for files needing migration',
       '  migrate          Migrate detected files',
       '  validate-branch  Validate current branch before merging',
-      '',
-      'Legacy (deprecated):',
-      '  npx tailwindcss-enhanced-upgrade [files...]  # Direct migration (use "migrate" instead)',
     ],
     options: globalOptions,
   })
@@ -79,14 +76,21 @@ async function run() {
         break
 
       case undefined:
-        // Legacy mode: run migration directly (for backward compatibility)
-        const { runMigration } = await import('./migrate-core')
-        await runMigration({
-          files: flags._.map(String),
-          config: flags['--config'] as string | undefined,
-          force: flags['--force'] as boolean | undefined,
+        // No command provided - show help
+        console.error('Error: No command specified\n')
+        help({
+          usage: [
+            'npx tailwindcss-enhanced-upgrade <command>',
+            '',
+            'Commands:',
+            '  init             Initialize git-aware migration tracking',
+            '  check            Check for files needing migration',
+            '  migrate          Migrate detected files',
+            '  validate-branch  Validate current branch before merging',
+          ],
+          options: globalOptions,
         })
-        break
+        process.exit(1)
 
       default:
         console.error(`Unknown command: ${command}`)
