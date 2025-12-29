@@ -4,6 +4,29 @@ import { segment } from '../../../../tailwindcss/src/utils/segment'
 import { Stylesheet } from '../../stylesheet'
 import { walk, WalkAction, walkDepth } from '../../utils/walk'
 
+/**
+ * Validates if a class name is suitable for @utility conversion.
+ * Invalid patterns:
+ * - Contains uppercase letters (component styles like ProseMirror, fadeIn)
+ * - Too long (> 50 chars, likely component names)
+ * - Contains multiple capital letters (CamelCase patterns)
+ */
+function isValidUtilityName(className: string): boolean {
+  // Skip if contains uppercase (likely a component)
+  if (/[A-Z]/.test(className)) {
+    console.warn(`Skipping invalid utility name (contains uppercase): .${className}`)
+    return false
+  }
+
+  // Skip if too long (likely a component name)
+  if (className.length > 50) {
+    console.warn(`Skipping invalid utility name (too long): .${className}`)
+    return false
+  }
+
+  return true
+}
+
 export function migrateAtLayerUtilities(stylesheet: Stylesheet): Plugin {
   function migrate(atRule: AtRule) {
     // Version check removed - git-based detection ensures we only migrate
@@ -51,7 +74,10 @@ export function migrateAtLayerUtilities(stylesheet: Stylesheet): Plugin {
             }
 
             if (selectorNode.type === 'class') {
-              classes.add(selectorNode.value)
+              // Only add valid utility names
+              if (isValidUtilityName(selectorNode.value)) {
+                classes.add(selectorNode.value)
+              }
             }
           })
         })

@@ -36,6 +36,8 @@ export async function split(stylesheets: Stylesheet[]) {
         (node.type === 'atrule' && node.name === 'import' && node.params.includes('layer(')) ||
         // @layer blocks are safe
         (node.type === 'atrule' && node.name === 'layer') ||
+        // @keyframes are safe (animations don't need to be split)
+        (node.type === 'atrule' && node.name === 'keyframes') ||
         // Comments are safe
         node.type === 'comment'
       ) {

@@ -248,6 +248,31 @@ Created by `init` command (`.tailwindcss-enhanced-upgrade.json`):
 
 ---
 
+## CSS Migration Best Practices
+
+The migration tool automatically converts `@layer utilities` to `@utility` rules. For best results:
+
+**✅ Before Migration:**
+- Review your `@layer utilities` - ensure only actual utility classes are in this layer
+- Move component styles (`.ProseMirror`, `.Modal`, etc.) out of utilities layer
+- Keep animations (`@keyframes`) separate from utilities if possible
+
+**⚠️ What Gets Skipped:**
+- Classes with uppercase letters (`.ProseMirror`, `.CamelCase`) - logged as warnings
+- Classes longer than 50 characters
+- `@keyframes` blocks (kept in original file, no splitting)
+
+**Example of problematic code:**
+```css
+@layer utilities {
+  .ProseMirror { /* ❌ Will be skipped - uppercase */ }
+  .custom-component { /* ✅ Valid utility name */ }
+  @keyframes fadeIn { /* ✅ Kept as-is, no splitting */ }
+}
+```
+
+---
+
 ## FAQ
 
 **Q: Why fork instead of wrapping?**  
@@ -284,6 +309,17 @@ npx ./packages/@tailwindcss-upgrade init --commit abc123
 ---
 
 ## Changelog
+
+### v1.0.4 (2025-12-29)
+- Added validation to skip invalid utility names (uppercase, too long)
+- Fixed @keyframes causing unnecessary file splitting
+- Added CSS migration best practices documentation
+- Improved warning messages for skipped classes
+
+### v1.0.3 (2025-12-29)
+- Added GitHub workflow template in package
+- Fixed CLI to require explicit commands
+- Improved documentation structure
 
 ### v1.0.2 (2025-12-29)
 - Fixed workspace dependencies publishing issue
